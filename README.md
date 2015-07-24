@@ -9,7 +9,13 @@ I plan on working more on it to implement more features, but I thought I share i
 
 ### Getting Started
 
-You can download the project, build it and reference the dll. Then you can use it as following:
+You can download the project, build it and reference the dll. Or install the [NuGet package](https://www.nuget.org/packages/MailChimp.dll) from the package manager console:
+
+```powershell
+Install-Package MailChimp.dll
+```
+
+Then you can use it as following:
 
 ```CSharp
 // Instantiate MailChimpManager passing your API Key as parameter (make sure you leave the datacenter id - e.g. us5)
