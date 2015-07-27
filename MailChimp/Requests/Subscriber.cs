@@ -17,27 +17,17 @@ namespace MailChimp.Requests
         public string Status { get; set; }
 
         [DataMember(Name = "merge_fields")]
-        public MergeFields MergeFields { get; set; }
+        public IMergeFields MergeFields { get; set; }
 
-        public Subscriber(string emailAddress, string status, string firstName, string lastName)
+        public Subscriber(string emailAddress, string status)
         {
             this.EmailAddress = emailAddress;
             this.Status = status;
-            this.MergeFields = new MergeFields()
-            {
-                FirstName = firstName,
-                LastName = lastName
-            };
         }
     }
 
-    [DataContract]
-    public class MergeFields
+    public interface IMergeFields
     {
-        [DataMember(Name = "FNAME")]
-        public string FirstName { get; set; }
 
-        [DataMember(Name = "LNAME")]
-        public string LastName { get; set; }
     }
 }

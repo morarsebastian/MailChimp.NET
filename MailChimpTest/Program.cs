@@ -1,10 +1,7 @@
 ﻿using MailChimp.Responses;
 using MailChimp.Requests;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MailChimp.Error;
 
 namespace MailChimpTest
 {
@@ -12,15 +9,28 @@ namespace MailChimpTest
     {
         static void Main(string[] args)
         {
-            // Instantiate MailChimpManager passing your API Key as parameter (make sure you leave the datacenter id - e.g. us5)
-            MailChimp.MailChimpManager mailChimp = new MailChimp.MailChimpManager("<YourAPIKeyHere>");
-            
-            // Get the subscriber lists
-            ListResult lists = mailChimp.GetLists();
+            try
+            {
+                // Instantiate MailChimpManager passing your API Key as parameter (make sure you leave the datacenter id - e.g. us5)
+                MailChimp.MailChimpManager mailChimp = new MailChimp.MailChimpManager("<YourAPIKeyHere>");
 
-            // Add a customer to first list
-            SubscriberResult subsResult =  mailChimp.AddCustomer(lists.Lists[0].Id, new Subscriber(string.Format("testaddress+{0}@yourdomain.com", DateTime.UtcNow.Ticks), "subscribed", "Firstname", "Lastname"));
+                // Get the subscriber lists
+                ListResult lists = mailChimp.GetLists();
 
+                Subscriber subscriber = new Subscriber(string.Format("testaddress+{0}@yourdomain.com", DateTime.UtcNow.Ticks), "subscribed");
+                subscriber.MergeFields = new MergeFields() { FirstName = "John", LastName = "Doe" };
+
+                // Add a customer to first list
+                SubscriberResult subsResult = mailChimp.AddCustomer(lists.Lists[0].Id, subscriber);
+
+                Console.WriteLine(subsResult.Id);
+            }
+            catch (MailChimpException ex)
+            {
+                Console.WriteLine(ex.MailChimpError.Detail);
+            }
+
+            Console.ReadKey();
         }
     }
 }
