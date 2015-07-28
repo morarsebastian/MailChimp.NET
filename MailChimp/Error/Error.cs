@@ -21,5 +21,17 @@ namespace MailChimp.Error
 
         [DataMember(Name = "detail")]
         public string Detail { get; set; }
+
+        [DataMember(Name = "errors")]
+        public List<ErrorInfo> ErrorsDetails { get; set; }
+    }
+
+    public class ErrorInfo
+    {
+        [DataMember(Name = "field")]
+        public string Field { get; set; }
+
+        [DataMember(Name = "message")]
+        public string Message { get; set; }
     }
 }
