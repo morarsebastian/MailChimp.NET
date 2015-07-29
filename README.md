@@ -46,8 +46,14 @@ namespace MailChimpTest
             // Get the subscriber lists
             ListResult lists = mailChimp.GetLists();
 
+            Subscriber subscriber = new Subscriber(string.Format("testaddress+{0}@yourdomain.com", DateTime.UtcNow.Ticks), "subscribed");
+            // This is a simple class that inherits IMergeFields (populated with custom lists fields from MailChimp)
+            // By default all MailChimp lists have first and last name, but you will surely need more columns added to
+            // yout list
+            subscriber.MergeFields = new MergeFields() { FirstName = "John", LastName = "Doe" }; 
+
             // Add a customer to first list
-            SubscriberResult subsResult =  mailChimp.AddCustomer(lists.Lists[0].Id, new Subscriber(string.Format("testaddress+{0}@yourdomain.com", DateTime.UtcNow.Ticks), "subscribed", "Firstname", "Lastname"));
+            SubscriberResult subsResult = mailChimp.AddCustomer(lists.Lists[0].Id, subscriber);
 
         }
     }
