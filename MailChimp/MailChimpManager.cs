@@ -58,6 +58,13 @@ namespace MailChimp
             return MakeAPICall<SubscriberResult>(string.Format("lists/{0}/members", listId), Method.POST, body);
         }
 
+        public SubscriberResult UpdateCustomer(string listId, Subscriber subscriber)
+        {
+            string body = JsonConvert.SerializeObject(subscriber);
+
+            return MakeAPICall<SubscriberResult>(string.Format("lists/{0}/members/{1}", listId, Utility.GetMd5Hash(subscriber.EmailAddress)), Method.PATCH, body);
+        }
+
         #endregion
 
         #region Generic API calling method

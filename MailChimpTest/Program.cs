@@ -17,11 +17,14 @@ namespace MailChimpTest
                 // Get the subscriber lists
                 ListResult lists = mailChimp.GetLists();
 
-                Subscriber subscriber = new Subscriber(string.Format("testaddress+{0}@yourdomain.com", DateTime.UtcNow.Ticks), "subscribed");
+                Subscriber subscriber = new Subscriber(string.Format("testaddress+{0}@yourdomain.com", "test"), "subscribed");
                 subscriber.MergeFields = new MergeFields() { FirstName = "John", LastName = "Doe" };
 
                 // Add a customer to first list
                 SubscriberResult subsResult = mailChimp.AddCustomer(lists.Lists[0].Id, subscriber);
+
+                ((MergeFields)subscriber.MergeFields).FirstName = ((MergeFields)subscriber.MergeFields).FirstName + " F.";
+                mailChimp.UpdateCustomer(lists.Lists[0].Id, subscriber);
 
                 Console.WriteLine(subsResult.Id);
             }
