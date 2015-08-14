@@ -21,7 +21,7 @@ namespace MailChimp.Requests
 
         public Subscriber(string emailAddress, string status)
         {
-            this.EmailAddress = emailAddress;
+            this.EmailAddress = emailAddress.ToLowerInvariant();
             this.Status = status;
         }
     }
