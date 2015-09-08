@@ -1,14 +1,9 @@
-﻿using MailChimp.Responses;
+﻿using System;
 using MailChimp.Error;
 using MailChimp.Requests;
+using MailChimp.Responses;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serializers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MailChimp
 {
@@ -19,12 +14,43 @@ namespace MailChimp
         const string BaseAPIUrl = "api.mailchimp.com";
         const string APIVersion = "3.0";
         const string APIProtocol = "https";
+        const string DatacenterSuffixSplitter = "-";
 
         #endregion
 
         #region Properties
 
-        public string APIKey { get; set; }
+        private string apiKey;
+        /// <summary>
+        /// A mailchimp API-Key containing the datacenter suffix, or an OAuth key
+        /// </summary>
+        public string APIKey
+        {
+            get { return apiKey; }
+            set
+            {
+                apiKey = value;
+                var indexOfSplitter = value.IndexOf(DatacenterSuffixSplitter, StringComparison.Ordinal);
+                if (indexOfSplitter > -1)
+                {
+                    Datacenter = value.Substring(indexOfSplitter + 1, value.Length - indexOfSplitter - 1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// To check if the given APIKey is a plain API Key or an OAuth access token which does not contain a datacenter suffix
+        /// </summary>
+        private bool IsPlainAPIKey
+        {
+            get { return APIKey.IndexOf(DatacenterSuffixSplitter) > -1; }
+        }
+
+        /// <summary>
+        /// The mailchimp datacenter to operate with, this may be automatically set through defining a mailchimp API key.
+        /// When using an OAuth key, the Datacenter must be specified separately (the correct datacenter is determined by querying the metadata OAuth URI of mailchimp)
+        /// </summary>
+        public string Datacenter { get; set; }
 
         #endregion
 
@@ -33,6 +59,21 @@ namespace MailChimp
         public MailChimpManager(string apiKey)
         {
             APIKey = apiKey;
+            if (string.IsNullOrEmpty(Datacenter))
+            {
+                throw new ArgumentException("Datacenter suffix not available in supplied api key");
+            }
+        }
+
+        /// <summary>
+        /// Create an instance of the wrapper, used for access token retrieved via OAuth
+        /// </summary>
+        /// <param name="accessToken">Access token obtained via OAuth application connection</param>
+        /// <param name="datacenter">Datacenter obtained via OAuth metadata call</param>
+        public MailChimpManager(string accessToken, string datacenter)
+        {
+            APIKey = accessToken;
+            Datacenter = datacenter;
         }
 
         #endregion
@@ -72,7 +113,14 @@ namespace MailChimp
         private T MakeAPICall<T>(string action, Method method, string body)
         {
             var client = new RestClient(GetBaseUrl());
-            client.Authenticator = new HttpBasicAuthenticator("APIKey", APIKey);
+            if (IsPlainAPIKey)
+            {
+                client.Authenticator = new HttpBasicAuthenticator("APIKey", APIKey);
+            }
+            else
+            {
+                client.Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(APIKey); // standard tokenType "OAuth" suffices
+            }
 
             var request = new RestRequest(action, method) { RequestFormat = DataFormat.Json };
 
@@ -102,12 +150,7 @@ namespace MailChimp
         #region Private Methods
         private string GetBaseUrl()
         {
-            if (APIKey.LastIndexOf("-") > 0)
-            {
-                string dc = APIKey.Substring(APIKey.LastIndexOf("-") + 1, APIKey.Length - APIKey.LastIndexOf("-") - 1);
-                return string.Format("{0}://{1}.{2}/{3}/", APIProtocol, dc, BaseAPIUrl, APIVersion);
-            }
-            return "";
+            return string.Format("{0}://{1}.{2}/{3}/", APIProtocol, Datacenter, BaseAPIUrl, APIVersion);
         }
         #endregion
     }
