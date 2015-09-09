@@ -48,21 +48,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Responses\CampaignDefaults.cs" />
-    <Compile Include="Responses\Contact.cs" />
-    <Compile Include="Responses\Location.cs" />
-    <Compile Include="Responses\SubscriberResult.cs" />
-    <Compile Include="Responses\SubscriberStats.cs" />
+    <Compile Include="DTOs\CampaignDefaults.cs" />
+    <Compile Include="DTOs\Contact.cs" />
+    <Compile Include="DTOs\Location.cs" />
+    <Compile Include="DTOs\MergeFields.cs" />
+    <Compile Include="DTOs\MembersInstance.cs" />
+    <Compile Include="DTOs\MergeFieldsInstance.cs" />
+    <Compile Include="DTOs\SubscriberStats.cs" />
     <Compile Include="Error\Error.cs" />
-    <Compile Include="Responses\Links.cs" />
-    <Compile Include="Responses\ListInfo.cs" />
-    <Compile Include="Responses\ListResult.cs" />
-    <Compile Include="Responses\Module.cs" />
-    <Compile Include="Responses\Stats.cs" />
+    <Compile Include="DTOs\Links.cs" />
+    <Compile Include="DTOs\ListsInstance.cs" />
+    <Compile Include="DTOs\ListsCollection.cs" />
+    <Compile Include="DTOs\Module.cs" />
+    <Compile Include="DTOs\Stats.cs" />
     <Compile Include="Error\MailChimpException.cs" />
     <Compile Include="MailChimpManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Requests\Subscriber.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

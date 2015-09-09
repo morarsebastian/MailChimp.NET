@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MailChimp.Responses
+namespace MailChimp.DTOs
 {
+    /// <summary>
+    /// Statistics - Various stats and counts for a list. Many of these are cached for at least five minutes.
+    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Instance.json
+    /// </summary>
     [DataContract]
     public class Stats
     {

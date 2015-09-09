@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MailChimp.Responses
+namespace MailChimp.DTOs
 {
+    /// <summary>
+    /// Information about a specific list.
+    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Instance.json
+    /// </summary>
     [DataContract]
-    public class ListInfo
+    public class ListsInstance
     {
         [DataMember(Name = "id")]
         public string Id { get; set; }
@@ -23,7 +24,7 @@ namespace MailChimp.Responses
         public string PermissionReminder { get; set; }
 
         [DataMember(Name = "use_archive_bar")]
-        public bool UseArchiveBar { get; set; }
+        public bool? UseArchiveBar { get; set; }
 
         [DataMember(Name = "campaign_defaults")]
         public CampaignDefaults CampaignDefaults { get; set; }
@@ -32,10 +33,10 @@ namespace MailChimp.Responses
         public string NotifyOnSubscribe { get; set; }
 
         [DataMember(Name = "date_created")]
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
         [DataMember(Name = "list_rating")]
-        public int ListRating { get; set; }
+        public int? ListRating { get; set; }
 
         [DataMember(Name = "email_type_option")]
         public bool EmailTypeOption { get; set; }
@@ -59,6 +60,6 @@ namespace MailChimp.Responses
         public Stats Stats { get; set; }
 
         [DataMember(Name = "_links")]
-        public List<Link> Links { get; set; }
+        public List<ResourceLink> Links { get; set; }
     }
 }
