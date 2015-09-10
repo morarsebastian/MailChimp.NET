@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
-namespace MailChimp.Responses
+namespace MailChimp.DTOs
 {
+    /// <summary>
+    /// Subscriber Stats - General open rates for a subscriber.
+    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Members/Instance.json
+    /// </summary>
     [DataContract]
     public class SubscriberStats
     {

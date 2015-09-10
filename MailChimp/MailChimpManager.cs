@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using MailChimp.DTOs;
 using MailChimp.Error;
-using MailChimp.Requests;
-using MailChimp.Responses;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using RestSharp;
 
 namespace MailChimp
@@ -80,11 +81,11 @@ namespace MailChimp
 
         #region Public Methods
 
-        public ListResult GetLists()
+        public ListsCollection GetLists()
         {
             try
             {
-                return MakeAPICall<ListResult>("lists", Method.GET, null);
+                return MakeAPICall<ListsCollection>("lists", Method.GET, null);
             }
             catch(Exception ex)
             {
@@ -92,18 +93,42 @@ namespace MailChimp
             }
         }
 
-        public SubscriberResult AddCustomer(string listId, Subscriber subscriber)
+        public ListsInstance AddList(ListsInstance list)
         {
-            string body = JsonConvert.SerializeObject(subscriber);
+            string body = SerializeAPIRequestBody(list);
 
-            return MakeAPICall<SubscriberResult>(string.Format("lists/{0}/members", listId), Method.POST, body);
+            return MakeAPICall<ListsInstance>("lists", Method.POST, body);
         }
 
-        public SubscriberResult UpdateCustomer(string listId, Subscriber subscriber)
+        public MembersInstance AddMember(string listId, MembersInstance member)
         {
-            string body = JsonConvert.SerializeObject(subscriber);
+            string body = SerializeAPIRequestBody(member);
 
-            return MakeAPICall<SubscriberResult>(string.Format("lists/{0}/members/{1}", listId, Utility.GetMd5Hash(subscriber.EmailAddress)), Method.PATCH, body);
+            return MakeAPICall<MembersInstance>(string.Format("lists/{0}/members", listId), Method.POST, body);
+        }
+
+        public MergeFieldsInstance AddMergeField(string listId, MergeFieldsInstance mergeField)
+        {
+            string body = SerializeAPIRequestBody(mergeField);
+
+            return MakeAPICall<MergeFieldsInstance>(string.Format("lists/{0}/merge-fields", listId), Method.POST, body);
+        }
+
+        private static string SerializeAPIRequestBody(object toSerialize)
+        {
+            return JsonConvert.SerializeObject(toSerialize, Formatting.None,
+                new JsonSerializerSettings()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    Converters = new List<JsonConverter>() {new StringEnumConverter() {CamelCaseText = true}}
+                });
+        }
+
+        public MembersInstance UpdateMember(string listId, MembersInstance member)
+        {
+            string body = SerializeAPIRequestBody(member);
+
+            return MakeAPICall<MembersInstance>(string.Format("lists/{0}/members/{1}", listId, Utility.GetMd5Hash(member.EmailAddress)), Method.PATCH, body);
         }
 
         #endregion

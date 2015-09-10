@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MailChimp.Responses
+namespace MailChimp.DTOs
 {
+    /// <summary>
+    /// List Members - Individuals who are currently or have been previously suscribed to this list, including members who have bounced or unsubscribed.
+    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Members/Instance.json
+    /// </summary>
     [DataContract]
-    public class SubscriberResult
+    public class MembersInstance
     {
         [DataMember(Name = "id")]
         public string Id { get; set; }
@@ -22,8 +23,16 @@ namespace MailChimp.Responses
         [DataMember(Name = "email_type")]
         public string EmailType { get; set; }
 
+        public enum StatusEnum
+        {
+            Subscribed,
+            Unsubscribed,
+            Cleaned,
+            Pending
+        }
+
         [DataMember(Name = "status")]
-        public string Status { get; set; }
+        public StatusEnum? Status { get; set; }
 
         [DataMember(Name = "merge_fields")]
         public MergeFields MergeFields { get; set; }
@@ -65,16 +74,26 @@ namespace MailChimp.Responses
         public string ListId { get; set; }
 
         [DataMember(Name = "_links")]
-        public List<Link> Links { get; set; }
-    }
+        public List<ResourceLink> Links { get; set; }
 
-    [DataContract]
-    public class MergeFields
-    {
-        [DataMember(Name = "FNAME")]
-        public string FirstName { get; set; }
+        public MembersInstance()
+        {
+        }
 
-        [DataMember(Name = "LNAME")]
-        public string LastName { get; set; }
+        public MembersInstance(string emailAddress): this(emailAddress, StatusEnum.Subscribed)
+        {
+        }
+
+        public MembersInstance(string emailAddress, StatusEnum status)
+        {
+            EmailAddress = emailAddress.ToLowerInvariant();
+            Status = status;
+        }
+
+        public MembersInstance(string emailAddress, StatusEnum status, string firstName, string lastName)
+            : this(emailAddress, status)
+        {
+            MergeFields = new MergeFields() {FirstName = firstName, LastName = lastName};
+        }
     }
 }

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
-namespace MailChimp.Responses
+namespace MailChimp.DTOs
 {
+    /// <summary>
+    /// Resource Link - This object represents a link from the resource where it is found to another resource or action that may be performed.
+    /// https://us11.api.mailchimp.com/schema/3.0/Generics/ResourceLink.json
+    /// </summary>
     [DataContract]
-    public class Link
+    public class ResourceLink
     {
         [DataMember(Name = "rel")]
         public string Rel { get; set; }
