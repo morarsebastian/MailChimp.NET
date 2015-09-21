@@ -4,7 +4,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// Subscriber Stats - General open rates for a subscriber.
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Members/Instance.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Members/Instance.json
     /// </summary>
     [DataContract]
     public class SubscriberStats

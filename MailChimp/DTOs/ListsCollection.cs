@@ -6,7 +6,7 @@ namespace MailChimp.DTOs
     /// <summary>
     /// Result of the 'lists' operation:
     /// Subscriber Lists - A collection of subscriber lists associated with this account. Lists contain subscribers who have opted-in to receive correspondence from you or your organization.
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Collection.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Collection.json
     /// </summary>
     [DataContract]
     public class ListsCollection

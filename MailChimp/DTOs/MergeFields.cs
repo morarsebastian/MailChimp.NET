@@ -7,7 +7,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// Member Merge Vars
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Members/MergeField.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Members/MergeField.json
     /// </summary>
     [DataContract]
     public class MergeFields: Dictionary<string, object>

@@ -4,7 +4,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// List Contact - displayed in campaign footers to comply with international spam laws
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Instance.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Instance.json
     /// </summary>
     [DataContract]
     public class Contact

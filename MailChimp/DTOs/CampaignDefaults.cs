@@ -4,7 +4,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// Campaign Defaults - Default values for campaigns created for a list.
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Instance.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Instance.json
     /// </summary>
     [DataContract]
     public class CampaignDefaults

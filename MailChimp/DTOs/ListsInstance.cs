@@ -6,7 +6,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// Information about a specific list.
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Instance.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Instance.json
     /// </summary>
     [DataContract]
     public class ListsInstance

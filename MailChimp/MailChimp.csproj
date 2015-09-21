@@ -55,6 +55,8 @@
     <Compile Include="DTOs\MembersInstance.cs" />
     <Compile Include="DTOs\MergeFieldsInstance.cs" />
     <Compile Include="DTOs\SubscriberStats.cs" />
+    <Compile Include="DTOs\TemplatesCollection.cs" />
+    <Compile Include="DTOs\TemplatesInstance.cs" />
     <Compile Include="Error\Error.cs" />
     <Compile Include="DTOs\Links.cs" />
     <Compile Include="DTOs\ListsInstance.cs" />

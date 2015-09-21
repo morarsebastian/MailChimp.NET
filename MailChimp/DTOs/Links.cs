@@ -4,7 +4,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// Resource Link - This object represents a link from the resource where it is found to another resource or action that may be performed.
-    /// https://us11.api.mailchimp.com/schema/3.0/Generics/ResourceLink.json
+    /// https://api.mailchimp.com/schema/3.0/Generics/ResourceLink.json
     /// </summary>
     [DataContract]
     public class ResourceLink
