@@ -12,7 +12,7 @@ namespace MailChimp.DTOs
     public class TemplatesInstance
     {
         [DataMember(Name = "id")]
-        public string Id { get; set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// Template Type - The type of template (user, base, or gallery).
