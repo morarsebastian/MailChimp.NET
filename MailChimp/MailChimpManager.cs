@@ -114,6 +114,18 @@ namespace MailChimp
             return MakeAPICall<MergeFieldsInstance>(string.Format("lists/{0}/merge-fields", listId), Method.POST, body);
         }
 
+        public TemplatesCollection GetTemplates()
+        {
+            try
+            {
+                return MakeAPICall<TemplatesCollection>("templates", Method.GET, null);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         private static string SerializeAPIRequestBody(object toSerialize)
         {
             return JsonConvert.SerializeObject(toSerialize, Formatting.None,

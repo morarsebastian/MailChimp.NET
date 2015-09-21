@@ -5,7 +5,7 @@ namespace MailChimp.DTOs
 {
     /// <summary>
     /// Statistics - Various stats and counts for a list. Many of these are cached for at least five minutes.
-    /// https://us11.api.mailchimp.com/schema/3.0/Lists/Instance.json
+    /// https://api.mailchimp.com/schema/3.0/Lists/Instance.json
     /// </summary>
     [DataContract]
     public class Stats
