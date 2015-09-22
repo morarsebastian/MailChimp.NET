@@ -11,7 +11,7 @@ namespace MailChimpTest
         {
             // Get the subscriber lists
             ListsCollection lists = mailChimp.GetLists();
-            Console.WriteLine("Got {0} out of {1} lists", lists.Lists.Count, lists.TotalItems);            
+            Console.WriteLine("Got {0} out of {1} lists", lists.Lists.Count, lists.TotalItems);
         }
 
         static void CreateListAddMember(MailChimpManager mailChimp)
@@ -112,6 +112,16 @@ namespace MailChimpTest
             Console.WriteLine("Member {0} added to list, id {1}", subscriber.EmailAddress, subscriber.Id);
         }
 
+        static void GetTemplates(MailChimpManager mailChimp)
+        {
+            // just get the 5th template which matches the given filter
+            var result = mailChimp.GetTemplates(offset: 5, count: 1, filter: new TemplatesInstance() { Active = true, Type = "base"});
+
+            // get all templates which match the same given filter
+            var fullResult = mailChimp.GetTemplates(count: result.TotalItems,
+                filter: new TemplatesInstance() {Active = true, Type = "base"});
+        }
+
         static void Main(string[] args)
         {
             try
@@ -123,6 +133,8 @@ namespace MailChimpTest
                 GetLists(mailChimp);
                 CreateListAddMember(mailChimp);
                 CreateListAddMemberCustomMergefields(mailChimp);
+                GetTemplates(mailChimp);
+                // see CustomMailChimpManager how to limit requested data to certain fields
             }
             catch (MailChimpException ex)
             {

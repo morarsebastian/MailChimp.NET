@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using MailChimp.DTOs;
 using MailChimp.Error;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace MailChimp
@@ -81,11 +83,11 @@ namespace MailChimp
 
         #region Public Methods
 
-        public ListsCollection GetLists()
+        public ListsCollection GetLists(int? offset = null, int? count = null, ListsInstance filter = null)
         {
             try
             {
-                return MakeAPICall<ListsCollection>("lists", Method.GET, null);
+                return MakeAPICall<ListsCollection>("lists", Method.GET, null, offset, count, filter);
             }
             catch(Exception ex)
             {
@@ -95,30 +97,30 @@ namespace MailChimp
 
         public ListsInstance AddList(ListsInstance list)
         {
-            string body = SerializeAPIRequestBody(list);
+            string body = SerializeToJson(list);
 
             return MakeAPICall<ListsInstance>("lists", Method.POST, body);
         }
 
         public MembersInstance AddMember(string listId, MembersInstance member)
         {
-            string body = SerializeAPIRequestBody(member);
+            string body = SerializeToJson(member);
 
             return MakeAPICall<MembersInstance>(string.Format("lists/{0}/members", listId), Method.POST, body);
         }
 
         public MergeFieldsInstance AddMergeField(string listId, MergeFieldsInstance mergeField)
         {
-            string body = SerializeAPIRequestBody(mergeField);
+            string body = SerializeToJson(mergeField);
 
             return MakeAPICall<MergeFieldsInstance>(string.Format("lists/{0}/merge-fields", listId), Method.POST, body);
         }
 
-        public TemplatesCollection GetTemplates()
+        public TemplatesCollection GetTemplates(int? offset = null, int? count = null, TemplatesInstance filter = null)
         {
             try
             {
-                return MakeAPICall<TemplatesCollection>("templates", Method.GET, null);
+                return MakeAPICall<TemplatesCollection>("templates", Method.GET, null, offset, count, filter);
             }
             catch (Exception ex)
             {
@@ -126,7 +128,7 @@ namespace MailChimp
             }
         }
 
-        private static string SerializeAPIRequestBody(object toSerialize)
+        private static string SerializeToJson(object toSerialize)
         {
             return JsonConvert.SerializeObject(toSerialize, Formatting.None,
                 new JsonSerializerSettings()
@@ -138,7 +140,7 @@ namespace MailChimp
 
         public MembersInstance UpdateMember(string listId, MembersInstance member)
         {
-            string body = SerializeAPIRequestBody(member);
+            string body = SerializeToJson(member);
 
             return MakeAPICall<MembersInstance>(string.Format("lists/{0}/members/{1}", listId, Utility.GetMd5Hash(member.EmailAddress)), Method.PATCH, body);
         }
@@ -147,7 +149,7 @@ namespace MailChimp
 
         #region Generic API calling method
 
-        private T MakeAPICall<T>(string action, Method method, string body)
+        protected virtual T MakeAPICall<T>(string action, Method method, string body, int? offset = null, int? count = null, object filter = null, IEnumerable<string> fields = null, IEnumerable<string> excludeFields = null)
         {
             var client = new RestClient(GetBaseUrl());
             if (IsPlainAPIKey)
@@ -158,10 +160,34 @@ namespace MailChimp
             {
                 client.Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(APIKey); // standard tokenType "OAuth" suffices
             }
-
             var request = new RestRequest(action, method) { RequestFormat = DataFormat.Json };
 
             request.AddParameter("application/json; charset=utf-8", body, ParameterType.RequestBody);
+
+            if (offset.HasValue)
+            {
+                request.AddQueryParameter("offset", offset.Value.ToString(CultureInfo.InvariantCulture));
+            }
+            if (count.HasValue)
+            {
+                request.AddQueryParameter("count", count.Value.ToString(CultureInfo.InvariantCulture));
+            }
+            if (filter != null)
+            {
+                var filterObject = JObject.Parse(SerializeToJson(filter));
+                foreach (var kvp in filterObject)
+                {
+                    request.AddQueryParameter(kvp.Key, kvp.Value.ToString());
+                }
+            }
+            if (fields != null)
+            {
+                request.AddQueryParameter("fields", string.Join(",", fields));
+            }
+            if (excludeFields != null)
+            {
+                request.AddQueryParameter("exclude_fields", string.Join(",", excludeFields));
+            }
             
             var response = client.Execute(request);
 
