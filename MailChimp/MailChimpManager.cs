@@ -85,14 +85,7 @@ namespace MailChimp
 
         public ListsCollection GetLists(int? offset = null, int? count = null, ListsInstance filter = null)
         {
-            try
-            {
-                return MakeAPICall<ListsCollection>("lists", Method.GET, null, offset, count, filter);
-            }
-            catch(Exception ex)
-            {
-                return null;
-            }
+            return MakeAPICall<ListsCollection>("lists", Method.GET, null, offset, count, filter);
         }
 
         public ListsInstance AddList(ListsInstance list)
@@ -118,14 +111,7 @@ namespace MailChimp
 
         public TemplatesCollection GetTemplates(int? offset = null, int? count = null, TemplatesInstance filter = null)
         {
-            try
-            {
-                return MakeAPICall<TemplatesCollection>("templates", Method.GET, null, offset, count, filter);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return MakeAPICall<TemplatesCollection>("templates", Method.GET, null, offset, count, filter);
         }
 
         private static string SerializeToJson(object toSerialize)
@@ -143,6 +129,16 @@ namespace MailChimp
             string body = SerializeToJson(member);
 
             return MakeAPICall<MembersInstance>(string.Format("lists/{0}/members/{1}", listId, Utility.GetMd5Hash(member.EmailAddress)), Method.PATCH, body);
+        }
+
+        public CampaignsCollection GetCampaigns(int? offset = null, int? count = null, CampaignsInstance filter = null)
+        {
+            return MakeAPICall<CampaignsCollection>("campaigns", Method.GET, null, offset, count, filter);
+        }
+
+        public CampaignsInstance GetCampaign(string id)
+        {
+            return MakeAPICall<CampaignsInstance>(string.Format("campaigns/{0}", id), Method.GET, null);
         }
 
         #endregion

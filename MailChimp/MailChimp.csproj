@@ -48,12 +48,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTOs\AbSplitOpts.cs" />
     <Compile Include="DTOs\CampaignDefaults.cs" />
+    <Compile Include="DTOs\CampaignsInstance.cs" />
+    <Compile Include="DTOs\CampaignsCollection.cs" />
+    <Compile Include="DTOs\DailySend.cs" />
+    <Compile Include="DTOs\Combinations.cs" />
     <Compile Include="DTOs\Contact.cs" />
+    <Compile Include="DTOs\Capsule.cs" />
+    <Compile Include="DTOs\DeliveryStatus.cs" />
+    <Compile Include="DTOs\Highrise.cs" />
+    <Compile Include="DTOs\ReportSummary.cs" />
+    <Compile Include="DTOs\RssOpts.cs" />
+    <Compile Include="DTOs\Salesforce.cs" />
+    <Compile Include="DTOs\Schedule.cs" />
+    <Compile Include="DTOs\SocialCard.cs" />
+    <Compile Include="DTOs\Tracking.cs" />
+    <Compile Include="DTOs\VariateSettings.cs" />
     <Compile Include="DTOs\Location.cs" />
     <Compile Include="DTOs\MergeFields.cs" />
     <Compile Include="DTOs\MembersInstance.cs" />
     <Compile Include="DTOs\MergeFieldsInstance.cs" />
+    <Compile Include="DTOs\Recipients.cs" />
+    <Compile Include="DTOs\Segment.cs" />
+    <Compile Include="DTOs\SegmentOpts.cs" />
+    <Compile Include="DTOs\Settings.cs" />
     <Compile Include="DTOs\SubscriberStats.cs" />
     <Compile Include="DTOs\TemplatesCollection.cs" />
     <Compile Include="DTOs\TemplatesInstance.cs" />

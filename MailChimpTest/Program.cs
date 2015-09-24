@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MailChimp;
 using MailChimp.DTOs;
 using MailChimp.Error;
@@ -122,6 +123,20 @@ namespace MailChimpTest
                 filter: new TemplatesInstance() {Active = true, Type = "base"});
         }
 
+        static void GetCampaigns(MailChimpManager mailChimp)
+        {
+            var result = mailChimp.GetCampaigns();
+            Console.WriteLine("Got {0} campaigns", result.Campaigns != null ? result.Campaigns.Count : 0);
+
+            var first = result.Campaigns != null ? result.Campaigns.FirstOrDefault() : null;
+            if (first != null)
+            {
+                // just to demonstrate usage, data would already be present in collection result
+                first = mailChimp.GetCampaign(first.Id);
+                Console.WriteLine("First campaign title: {0}", first.Settings.Title);
+            }
+        }
+
         static void Main(string[] args)
         {
             try
@@ -129,12 +144,11 @@ namespace MailChimpTest
                 // Instantiate MailChimpManager passing your API Key as parameter (make sure you leave the datacenter id - e.g. us5)
                 MailChimpManager mailChimp = new MailChimpManager("<YourAPIKeyHere>");
                 // Alternatively you can use an OAuth token with the corresponding data center id as well: MailChimp.MailChimpManager mailChimp = new MailChimp.MailChimpManager("<YourOAuthTokenHere>", "dcid");
-                    
                 GetLists(mailChimp);
                 CreateListAddMember(mailChimp);
                 CreateListAddMemberCustomMergefields(mailChimp);
-                GetTemplates(mailChimp);
-                // see CustomMailChimpManager how to limit requested data to certain fields
+                GetTemplates(mailChimp); // see CustomMailChimpManager how to limit requested data to certain fields
+                GetCampaigns(mailChimp);
             }
             catch (MailChimpException ex)
             {
