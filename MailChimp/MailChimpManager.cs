@@ -145,6 +145,23 @@ namespace MailChimp
             return MakeAPICall<MembersInstance>(string.Format("lists/{0}/members/{1}", listId, Utility.GetMd5Hash(member.EmailAddress)), Method.PATCH, body);
         }
 
+        public CampaignsCollection GetCampaigns(int? offset = null, int? count = null, CampaignsInstance filter = null)
+        {
+            try
+            {
+                return MakeAPICall<CampaignsCollection>("campaigns", Method.GET, null, offset, count, filter);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public CampaignsInstance GetCampaign(string id)
+        {
+            return MakeAPICall<CampaignsInstance>(string.Format("campaigns/{0}", id), Method.GET, null);
+        }
+
         #endregion
 
         #region Generic API calling method
