@@ -13,7 +13,7 @@ namespace MailChimp.DTOs
         public int? Opens { get; set; }
 
         [DataMember(Name = "unique_opens")]
-        public string UniqueOpens { get; set; }
+        public int? UniqueOpens { get; set; }
 
         [DataMember(Name = "open_rate")]
         public decimal? OpenRate { get; set; }
