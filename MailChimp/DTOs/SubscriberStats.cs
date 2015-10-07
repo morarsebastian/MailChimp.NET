@@ -10,9 +10,9 @@ namespace MailChimp.DTOs
     public class SubscriberStats
     {
         [DataMember(Name = "avg_open_rate")]
-        public int AvgOpenRate { get; set; }
+        public decimal? AvgOpenRate { get; set; }
 
         [DataMember(Name = "avg_click_rate")]
-        public int AvgClickRate { get; set; }
+        public decimal? AvgClickRate { get; set; }
     }
 }

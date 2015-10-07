@@ -11,46 +11,46 @@ namespace MailChimp.DTOs
     public class Stats
     {
         [DataMember(Name = "member_count")]
-        public int MemberCount { get; set; }
+        public int? MemberCount { get; set; }
 
         [DataMember(Name = "unsubscribe_count")]
-        public int UnsubscribeCount { get; set; }
+        public int? UnsubscribeCount { get; set; }
 
         [DataMember(Name = "cleaned_count")]
-        public int CleanedCount { get; set; }
+        public int? CleanedCount { get; set; }
 
         [DataMember(Name = "member_count_since_send")]
-        public int MemberCountSinceSend { get; set; }
+        public int? MemberCountSinceSend { get; set; }
 
         [DataMember(Name = "unsubscribe_count_since_send")]
-        public int UnsubscribeSountSinceSend { get; set; }
+        public int? UnsubscribeSountSinceSend { get; set; }
 
         [DataMember(Name = "cleaned_count_since_send")]
-        public int CleanedCountSinceSend { get; set; }
+        public int? CleanedCountSinceSend { get; set; }
 
         [DataMember(Name = "campaign_count")]
-        public int CampaignCount { get; set; }
+        public int? CampaignCount { get; set; }
 
         [DataMember(Name = "campaign_last_sent")]
         public DateTime? CampaignLastSent { get; set; }
 
         [DataMember(Name = "merge_field_count")]
-        public int MergeFieldCount { get; set; }
+        public int? MergeFieldCount { get; set; }
 
         [DataMember(Name = "avg_sub_rate")]
-        public int AvgSubRate { get; set; }
+        public decimal? AvgSubRate { get; set; }
 
         [DataMember(Name = "avg_unsub_rate")]
-        public int AvgUnsubRatent { get; set; }
+        public decimal? AvgUnsubRate { get; set; }
 
         [DataMember(Name = "target_sub_rate")]
-        public int TargetSubRate { get; set; }
+        public decimal? TargetSubRate { get; set; }
 
         [DataMember(Name = "open_rate")]
-        public int OpenRate { get; set; }
+        public decimal? OpenRate { get; set; }
 
         [DataMember(Name = "click_rate")]
-        public int ClickRate { get; set; }
+        public decimal? ClickRate { get; set; }
 
         [DataMember(Name = "last_sub_date")]
         public DateTime? LastSubDate { get; set; }

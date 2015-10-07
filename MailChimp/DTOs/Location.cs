@@ -10,16 +10,16 @@ namespace MailChimp.DTOs
     public class Location
     {
         [DataMember(Name = "latitude")]
-        public decimal Latitude { get; set; }
+        public decimal? Latitude { get; set; }
 
         [DataMember(Name = "longitude")]
-        public decimal Longitude { get; set; }
+        public decimal? Longitude { get; set; }
 
         [DataMember(Name = "gmtoff")]
-        public int Gmtoff { get; set; }
+        public int? Gmtoff { get; set; }
 
         [DataMember(Name = "dstoff")]
-        public int Dstoff { get; set; }
+        public int? Dstoff { get; set; }
 
         [DataMember(Name = "country_code")]
         public string CountryCode { get; set; }
