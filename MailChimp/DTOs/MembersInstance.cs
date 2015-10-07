@@ -53,7 +53,7 @@ namespace MailChimp.DTOs
         public DateTime TimestampOpt { get; set; }
 
         [DataMember(Name = "member_rating")]
-        public int MemberRating { get; set; }
+        public int? MemberRating { get; set; }
 
         [DataMember(Name = "last_changed")]
         public DateTime LastChanged { get; set; }

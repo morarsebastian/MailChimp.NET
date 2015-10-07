@@ -19,9 +19,9 @@ namespace MailChimp.DTOs
         public string Status { get; set; }
 
         [DataMember(Name = "emails_sent")]
-        public int EmailsSent { get; set; }
+        public int? EmailsSent { get; set; }
 
         [DataMember(Name = "emails_canceled")]
-        public int EmailsCanceled { get; set; }
+        public int? EmailsCanceled { get; set; }
     }
 }
