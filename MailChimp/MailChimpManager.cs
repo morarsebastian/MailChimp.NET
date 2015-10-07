@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
 using MailChimp.DTOs;
 using MailChimp.Error;
 using Newtonsoft.Json;
@@ -19,6 +21,10 @@ namespace MailChimp
         const string APIProtocol = "https";
         const string DatacenterSuffixSplitter = "-";
 
+        #endregion
+
+        #region Members
+        private readonly Regex webIdRegex = new Regex("\\?id=(\\d*)", RegexOptions.Compiled);
         #endregion
 
         #region Properties
@@ -138,14 +144,35 @@ namespace MailChimp
 
         public CampaignsInstance GetCampaign(string id)
         {
-            return MakeAPICall<CampaignsInstance>(string.Format("campaigns/{0}", id), Method.GET, null);
+            return MakeAPICall<CampaignsInstance>(string.Format("campaigns/{0}", id), Method.GET);
+        }
+
+        /// <summary>
+        /// Get mailchimp web id for campaign to use for links to the mailchimp web site
+        /// e.g. https://admin.mailchimp.com/campaigns/show?id={webid}
+        /// </summary>
+        /// <param name="id">The campaign id string</param>
+        /// <returns>The numeric web id</returns>
+        public int? GetCampaignWebId(string id)
+        {
+            var response = MakeAPICall(string.Format("campaigns/{0}", id), Method.GET, fields: new [] {"id"});
+            var linkHeader = response.Headers.FirstOrDefault(h => h.Name == "Link");
+            if (linkHeader != null)
+            {
+                var match = webIdRegex.Match(linkHeader.Value.ToString());
+                if (match.Success && match.Groups.Count == 2)
+                {
+                    return int.Parse(match.Groups[1].Value);
+                }
+            }
+            return null;
         }
 
         #endregion
 
-        #region Generic API calling method
+        #region Generic API calling methods
 
-        protected virtual T MakeAPICall<T>(string action, Method method, string body, int? offset = null, int? count = null, object filter = null, IEnumerable<string> fields = null, IEnumerable<string> excludeFields = null)
+        public virtual IRestResponse MakeAPICall(string action, Method method, string body = null, int? offset = null, int? count = null, object filter = null, IEnumerable<string> fields = null, IEnumerable<string> excludeFields = null)
         {
             var client = new RestClient(GetBaseUrl());
             if (IsPlainAPIKey)
@@ -158,7 +185,10 @@ namespace MailChimp
             }
             var request = new RestRequest(action, method) { RequestFormat = DataFormat.Json };
 
-            request.AddParameter("application/json; charset=utf-8", body, ParameterType.RequestBody);
+            if (!string.IsNullOrEmpty(body))
+            {
+                request.AddParameter("application/json; charset=utf-8", body, ParameterType.RequestBody);
+            }
 
             if (offset.HasValue)
             {
@@ -184,7 +214,7 @@ namespace MailChimp
             {
                 request.AddQueryParameter("exclude_fields", string.Join(",", excludeFields));
             }
-            
+
             var response = client.Execute(request);
 
             if (response.Content == null)
@@ -193,14 +223,19 @@ namespace MailChimp
             }
             else
             {
-                if(response.StatusCode != System.Net.HttpStatusCode.OK)
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     throw new MailChimpException(response.ErrorMessage, null, JsonConvert.DeserializeObject<Error.Error>(response.Content));
                 }
             }
 
-            var returnedObject = JsonConvert.DeserializeObject<T>(response.Content);
+            return response;
+        }
 
+        public virtual T MakeAPICall<T>(string action, Method method, string body = null, int? offset = null, int? count = null, object filter = null, IEnumerable<string> fields = null, IEnumerable<string> excludeFields = null)
+        {
+            var responseString = MakeAPICall(action, method, body, offset, count, filter, fields, excludeFields).Content;
+            var returnedObject = JsonConvert.DeserializeObject<T>(responseString);
             return (T)Convert.ChangeType(returnedObject, typeof(T));
         }
 
